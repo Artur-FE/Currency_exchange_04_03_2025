@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./script.js" defer></script>
+    <link rel="stylesheet" href="./style.css">
+    <title>Currency exchange</title>
+</head>
+<body>
+
+    <h1>Currency exchange</h1>
+    <div id="selectHeader"> 
+
+        <form>
+            <label for="CurrencyForPurchase">Select currency for purchase:</label>
+            <select id="CurrencyForPurchase" name="CurrencyForPurchase">
+              <option value="USD">USD</option>
+              <option value="RUB">RUB</option>
+              <option value="EUR">EUR</option>
+              <option value="BTC">BTC</option>
+            </select>
+            <button id="buttPurchase" type="button">Enter</button>
+          
+          </form>
+
+        <form>
+            <label for="CurrencyForSale">Select currency for sale:</label>
+            <select id="CurrencyForSale" name="CurrencyForSale">
+              <option value="USD">USD</option>
+              <option value="RUB">RUB</option>
+              <option value="EUR">EUR</option>
+              <option value="BTC">BTC</option>
+            </select>
+            <button id="butt" type="button">Enter</button>
+          
+          </form>
+    </div>
+    <div>
+        <ol id="currency"></ol>
+    </div>
+</body>
+</html>
