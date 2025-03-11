@@ -51,10 +51,26 @@ fetch(
 
 
      //получаем значение выбранное пользователем в выпадающем списке CurrencyForSale после нажатия на кнопку 
-   
-     currencyForSaleSelected = document.getElementById('CurrencyForSale');
      let currencyForPurchaseSelected = document.getElementById('CurrencyForPurchase'); 
-     console.log(currencyForPurchaseSelected);
+     let currencyForSaleSelected = document.getElementById('CurrencyForSale');    
+     
+     const startValueInputCurrencyForPurchase = document.getElementById("inputCurrencyForPurchase");
+     const startValueInputCurrencyForSale = document.getElementById("inputCurrencyForSale");
+    
+     console.log(currencyForSaleSelected.value);
+     moneyForPurchase = latest.rates[currencyForPurchaseSelected.value];
+     moneyForSale  = latest.rates[currencyForSaleSelected.value];
+    console.log(moneyForPurchase);
+    console.log(moneyForSale);
+    
+    
+
+     startValueInputCurrencyForPurchase.value = latest.rates[currencyForPurchaseSelected.value];
+     startValueInputCurrencyForSale.value = latest.rates[currencyForSaleSelected.value];
+     console.log(typeof latest.rates[currencyForPurchaseSelected.value]);
+     
+
+     
      
 
     currencyForPurchaseSelected.onchange = function() {
@@ -125,7 +141,10 @@ fetch(
     const inputCurrencyForPurchase = document.getElementById("inputCurrencyForPurchase");
   
     inputCurrencyForPurchase.oninput = function() {
-      console.log(inputCurrencyForSale.value);      
+      console.log(typeof inputCurrencyForSale.value);   
+      console.log(typeof inputCurrencyForPurchase.value);
+         console.log(inputCurrencyForPurchase.value * moneyForSale/moneyForPurchase);
+         
       inputCurrencyForSale.value = inputCurrencyForPurchase.value * moneyForSale/moneyForPurchase; 
     };
 // ловим значение (количество валюты) из input inputCurrencyForSale и выводим 
