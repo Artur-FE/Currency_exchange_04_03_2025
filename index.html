@@ -13,7 +13,7 @@
     <div id="selectHeader"> 
 
         <form>
-            <label for="CurrencyForPurchase">Select currency for purchase:</label>
+            <label for="CurrencyForPurchase">Select the currency we need to purchase from you:</label>
             <select id="CurrencyForPurchase" name="CurrencyForPurchase">
               <option value="USD">USD</option>
               <option value="RUB">RUB</option>
@@ -25,14 +25,14 @@
           </form>
 
         <form>
-            <label for="CurrencyForSale">Select currency for sale:</label>
+            <label for="CurrencyForSale">Select the currency we will sell you:</label>
             <select id="CurrencyForSale" name="CurrencyForSale">
               <option value="USD">USD</option>
               <option value="RUB" selected>RUB</option>
               <option value="EUR">EUR</option>
               <option value="BTC">BTC</option>
             </select>
-            <button id="butt" type="button">Exchange</button>
+          
           
           </form>
     </div>
@@ -47,7 +47,14 @@
       <label for="inputCurrencyForSale"></label>
       <input type="number" id="inputCurrencyForSale">
   </div>
+ <div>
+  <button id="butt" type="button" onclick="outputOfTheExchangeDataEntryForm()">Exchange</button>
+</div>
 
+<div>
+  <ol id="exchangeDataEntryForm">
+  </ol>
+</div>
  
 </body>
 </html>
