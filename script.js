@@ -2,13 +2,13 @@ const currency = document.getElementById("currency");
 let select = document.createElement("select");
 select.id = "select";
 let selectHeader = document.getElementById("selectHeader");
-let currencyForSaleSelected = 'appleee';
 let moneyForSale  = 0;
 let moneyForPurchase = 0;
 let moneyForPurchaseName = '';
 let moneyForSaleName = '';
 let inputCurrencyForPurchase = document.getElementById("inputCurrencyForPurchase");
 let inputCurrencyForSale = document.getElementById("inputCurrencyForSale");
+let exchangeDataEntryForm = document.getElementById("exchangeDataEntryForm");
 
 
 
@@ -19,40 +19,14 @@ fetch(
     return response.json();
   })
   .then((latest) => {
-    //console.log(`1 USD = ${latest.rates.RUB}`);
+  
     const arrayKeys = Object.keys(latest.rates);
-    //выпадающий список
-    // arrayKeys.forEach((text, index) => {
-    //     let option = new Option(text, "value" + index);
-    //     select.add(option);
-    //   });
-    //   selectHeader.appendChild(select);
-
-// //вывод всех курсов на странице
-//     arrayKeys.forEach((element) => {
-//       console.log(`1 USD = ${latest.rates[element]} ${element}`);
-//       const li = document.createElement("li");
-//       li.textContent = `
-//         1 USD = ${latest.rates[element]} ${element}
-//         `;
-//       currency.appendChild(li);
-//     });
-
-
-// // получаем выбранную валюту в выпадающем списке для продажи
-
-//const currencyForPurchase = document.getElementById('CurrencyForPurchase');
-//const CurrencyForPurchaseValue = currencyForPurchase.options[currencyForPurchase.selectedIndex].value;
-
-// //получаем выбранную валюту в выпадающем списке для покупки    
-// let selectElement = document.getElementById('CurrencyForSale');
-    // let selectedValue = selectElement.options[selectElement.selectedIndex].value;
-
-
 
      //получаем значение выбранное пользователем в выпадающем списке CurrencyForSale после нажатия на кнопку 
      let currencyForPurchaseSelected = document.getElementById('CurrencyForPurchase'); 
      let currencyForSaleSelected = document.getElementById('CurrencyForSale');    
+
+     // получаем доступ к input при первой загрузке страницы
      
      const startValueInputCurrencyForPurchase = document.getElementById("inputCurrencyForPurchase");
      const startValueInputCurrencyForSale = document.getElementById("inputCurrencyForSale");
@@ -63,26 +37,21 @@ fetch(
     console.log(moneyForPurchase);
     console.log(moneyForSale);
     
-    
+    // выводим курс в input валют которые выбраны по умолчанию при первой загрузке страницы
 
      startValueInputCurrencyForPurchase.value = latest.rates[currencyForPurchaseSelected.value];
      startValueInputCurrencyForSale.value = latest.rates[currencyForSaleSelected.value];
      console.log(typeof latest.rates[currencyForPurchaseSelected.value]);
      
-
-     
-     
-
-    currencyForPurchaseSelected.onchange = function() {
-      
+// функция пересчета курса выбранных валют в окнах input
+    
+    function exchange() {
       console.log('onchange сработал');
       console.log(inputCurrencyForPurchase.value);
       
-      
-		currencyForSaleSelected = document.getElementById('CurrencyForSale').value; 
+		let currencyForSaleSelected = document.getElementById('CurrencyForSale').value; 
     let currencyForPurchaseSelected = document.getElementById('CurrencyForPurchase').value;     
      
-      
       // выводим курс выбранных валют относительно друг-друга
         arrayKeys.forEach((element) => {
       //очищаем поле вывода от предыдущего значения 
@@ -91,14 +60,11 @@ fetch(
                 currency.innerHTML = '';
               }
           
-          
           if(element === currencyForSaleSelected) {
               
               //записываем в переменные курс и название валюты которую хотим купить
               moneyForSale  = `${latest.rates[element]}`;
               moneyForSaleName = `${element}`;
-          
-           
                 // const li = document.createElement("li");
                 // li.id = "currencyActual"
                 // li.textContent = `
@@ -111,8 +77,7 @@ fetch(
 
             if(element === currencyForPurchaseSelected) {
              moneyForPurchase = `${latest.rates[element]}`;
-             moneyForPurchaseName = `${element}`;
-                       
+             moneyForPurchaseName = `${element}`;       
             }
 
             // проверяем, что значения валют покупки продажи найдены и выводим результат на страницу
@@ -155,8 +120,50 @@ fetch(
       console.log(inputCurrencyForPurchase.value);
       inputCurrencyForPurchase.value = inputCurrencyForSale.value / (moneyForSale/moneyForPurchase); 
     };
+
+// вызов функции exchange() при выборе нужной валюты в выпадающем списке
+
+    currencyForPurchaseSelected.onchange = function() {
+      exchange();
+    }
+
+    currencyForSaleSelected.onchange = function() {
+      exchange();
+    }
+
+    butt.onclick = function() {
+      exchangeDataEntryForm.innerHTML =`
+      <li><label for="sell">You sell a quantity of currency ${currencyForPurchaseSelected.value}:</label>
+      <input type="text" id="sell" readonly value="${inputCurrencyForPurchase.value}" /> </li> 
+
+       <li><label for="numberOfTheCardFromWhichYouWillTransferMoney">Number of the card from which you will transfer the money:</label>
+      <input type="text" id="numberOfTheCardFromWhichYouWillTransferMoney" value="" /></li>
+      
+      <li><label for="purchase">You purchase a quantity of currency ${currencyForSaleSelected.value}:</label>
+      <input type="text" id="purchase" readonly value="${inputCurrencyForSale.value}" /></li>
+
+      <li><label for="NumberOfTheCardToWhichYouWantToReceiveTheMoney">Number of the card to which you want to receive the money:</label>
+      <input type="text" id="numberCardFromWhichYouWillTransferMoney" value="" /></li>
+
+      <li><label for="name">Enter your name:</label>
+      <input type="text" id="name" value="" /></li>
+
+      <li><label for="email">Enter your email:</label>
+      <input type="email" id="email" value="" /></li>
+
+      <li><label for="phoneNumber">Enter your phone number:</label>
+      <input type="tel" id="phoneNumber" value="" /></li>
+      `
+    }
+  
+
   });
 
+  // function outputOfTheExchangeDataEntryForm() {
+  //   exchangeDataEntryForm.innerHTML =`
+  //   <li></li>
+  //   `
+  // }
     
 
   
