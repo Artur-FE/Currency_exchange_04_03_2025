@@ -10,6 +10,10 @@ let inputCurrencyForPurchase = document.getElementById("inputCurrencyForPurchase
 let inputCurrencyForSale = document.getElementById("inputCurrencyForSale");
 let exchangeDataEntryForm = document.getElementById("exchangeDataEntryForm");
 
+function clearExchangeDataEntryForm(){
+  exchangeDataEntryForm.innerHTML =``;
+}
+
 
 
 fetch(
@@ -39,8 +43,8 @@ fetch(
     
     // выводим курс в input валют которые выбраны по умолчанию при первой загрузке страницы
 
-     startValueInputCurrencyForPurchase.value = latest.rates[currencyForPurchaseSelected.value];
-     startValueInputCurrencyForSale.value = latest.rates[currencyForSaleSelected.value];
+     startValueInputCurrencyForPurchase.value = latest.rates[currencyForPurchaseSelected.value].toFixed(2);
+     startValueInputCurrencyForSale.value = latest.rates[currencyForSaleSelected.value].toFixed(2);
      console.log(typeof latest.rates[currencyForPurchaseSelected.value]);
      
 // функция пересчета курса выбранных валют в окнах input
@@ -48,10 +52,11 @@ fetch(
     function exchange() {
       console.log('onchange сработал');
       console.log(inputCurrencyForPurchase.value);
-      
+      //очищаем выпадающее поле для обмена после установки новых значений в выпадающем списке валют 
+     clearExchangeDataEntryForm();
+
 		let currencyForSaleSelected = document.getElementById('CurrencyForSale').value; 
-    let currencyForPurchaseSelected = document.getElementById('CurrencyForPurchase').value;     
-     
+    let currencyForPurchaseSelected = document.getElementById('CurrencyForPurchase').value;      
       // выводим курс выбранных валют относительно друг-друга
         arrayKeys.forEach((element) => {
       //очищаем поле вывода от предыдущего значения 
@@ -89,8 +94,8 @@ fetch(
                   ${moneyForSale/moneyForPurchase} ${moneyForSaleName}
                   `;
                //выводим значения курсов в input на странице
-                  inputCurrencyForPurchase.value = moneyForPurchase/moneyForPurchase;
-                inputCurrencyForSale.value = moneyForSale/moneyForPurchase;
+                  inputCurrencyForPurchase.value = (moneyForPurchase/moneyForPurchase).toFixed(2);
+                inputCurrencyForSale.value = (moneyForSale/moneyForPurchase).toFixed(2);
                 currency.appendChild(li);
                 return;
            }
@@ -104,21 +109,20 @@ fetch(
 
     const inputCurrencyForSale = document.getElementById("inputCurrencyForSale");
     const inputCurrencyForPurchase = document.getElementById("inputCurrencyForPurchase");
-  
-    inputCurrencyForPurchase.oninput = function() {
-      console.log(typeof inputCurrencyForSale.value);   
-      console.log(typeof inputCurrencyForPurchase.value);
-         console.log(inputCurrencyForPurchase.value * moneyForSale/moneyForPurchase);
-         
-      inputCurrencyForSale.value = inputCurrencyForPurchase.value * moneyForSale/moneyForPurchase; 
+
+    inputCurrencyForPurchase.oninput = function() {       
+      inputCurrencyForSale.value = (inputCurrencyForPurchase.value * moneyForSale/moneyForPurchase).toFixed(2); 
+     //очищаем выпадающее поле для обмена после установки новых значений в input 
+      clearExchangeDataEntryForm();
     };
 // ловим значение (количество валюты) из input inputCurrencyForSale и выводим 
    // в inputCurrencyForPurchase итоговую сумму которую должен заплатить человек для получения того количества валюты 
    // которое он указал в inputCurrencyForSale
 
     inputCurrencyForSale.oninput = function() {
-      console.log(inputCurrencyForPurchase.value);
-      inputCurrencyForPurchase.value = inputCurrencyForSale.value / (moneyForSale/moneyForPurchase); 
+      inputCurrencyForPurchase.value = (inputCurrencyForSale.value / (moneyForSale/moneyForPurchase)).toFixed(2); 
+      //очищаем выпадающее поле для обмена после установки новых значений в input 
+     clearExchangeDataEntryForm();
     };
 
 // вызов функции exchange() при выборе нужной валюты в выпадающем списке
@@ -136,23 +140,26 @@ fetch(
       <li><label for="sell">You sell a quantity of currency ${currencyForPurchaseSelected.value}:</label>
       <input type="text" id="sell" readonly value="${inputCurrencyForPurchase.value}" /> </li> 
 
-       <li><label for="numberOfTheCardFromWhichYouWillTransferMoney">Number of the card from which you will transfer the money:</label>
-      <input type="text" id="numberOfTheCardFromWhichYouWillTransferMoney" value="" /></li>
+       <li><label for="ccNumberTransferMoney">Number of the card from which you will transfer the money:</label>
+      <input type="text" id="ccNumberTransferMoney" value="" autocomplete="cc-number" /></li>
       
       <li><label for="purchase">You purchase a quantity of currency ${currencyForSaleSelected.value}:</label>
       <input type="text" id="purchase" readonly value="${inputCurrencyForSale.value}" /></li>
 
-      <li><label for="NumberOfTheCardToWhichYouWantToReceiveTheMoney">Number of the card to which you want to receive the money:</label>
-      <input type="text" id="numberCardFromWhichYouWillTransferMoney" value="" /></li>
+      <li><label for="ccNumberReceiveTheMoney">Number of the card to which you want to receive the money:</label>
+      <input type="text" id="ccNumberReceiveTheMoney" value="" autocomplete="cc-number" /></li>
 
       <li><label for="name">Enter your name:</label>
-      <input type="text" id="name" value="" /></li>
+      <input type="text" id="name" value="" autocomplete="given-name" /></li>
 
       <li><label for="email">Enter your email:</label>
-      <input type="email" id="email" value="" /></li>
+      <input type="email" id="email" value="" autocomplete="on"/></li>
 
       <li><label for="phoneNumber">Enter your phone number:</label>
-      <input type="tel" id="phoneNumber" value="" /></li>
+      <input type="tel" id="phoneNumber" value="" autocomplete="tel" /></li>
+      
+      <button id="btnExchangeRequest" type="submit">Exchange request</button>
+      
       `
     }
   

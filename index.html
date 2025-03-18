@@ -42,10 +42,10 @@
 
     <div>
       <label for="inputCurrencyForPurchase"></label>
-      <input type="number" id="inputCurrencyForPurchase">
+      <input type="number" id="inputCurrencyForPurchase" min="1">
       =
       <label for="inputCurrencyForSale"></label>
-      <input type="number" id="inputCurrencyForSale">
+      <input type="number" id="inputCurrencyForSale" min="1">
   </div>
  <div>
   <button id="butt" type="button" onclick="outputOfTheExchangeDataEntryForm()">Exchange</button>
@@ -54,6 +54,7 @@
 <div>
   <ol id="exchangeDataEntryForm">
   </ol>
+  
 </div>
  
 </body>
